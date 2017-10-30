@@ -16,10 +16,10 @@ app.post('/todos',(req,res)=>{
     text: req.body.text
   });
 
-  todo.save().then((doc)=>{
+  todo.save()
+  .then((doc)=>{
     res.send(doc);
-  }, (e)=>{
-    console.log(e);
+  }, (e) => {
     res.status(400).send(e);
   });
 });
