@@ -9,6 +9,8 @@ var {mongoose} = require('./db/mongoose');
 var {Todo} = require('./models/todo');
 var {User} = require('./models/user');
 
+var {authenticate} = require('./middleware/authenticate');
+
 var app = express();
 const port = process.env.PORT;
 app.use(bodyParser.json());
@@ -104,7 +106,6 @@ app.delete('/todos/:id', (req,res)=>{
   });  
 });
 
-
 app.post('/users', (req,res)=>{
   var body = _.pick(req.body,['email','password']);
 
@@ -123,6 +124,10 @@ app.post('/users', (req,res)=>{
   });
 });
 
+app.get('/users/me',authenticate, (req,res)=>{
+  var token = req.header('x-auth');
+  res.send(req.user);
+});
 
 app.listen(port, () => {
   console.log(`Started on port ${port}`);
